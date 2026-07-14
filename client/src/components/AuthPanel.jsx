@@ -57,13 +57,13 @@ function AuthPanel({ onAuth }) {
         </div>
       </form>
       <aside className="feature-panel">
-        <h2>Test fast</h2>
-        <p>Register the teacher preset, create or seed exams, logout, then login with the student preset.</p>
+        <h2>Online exam portal</h2>
+        <p>Teachers manage examinations and evaluations. Students attend timed exams and view published results.</p>
         <ul>
-          <li>Teacher APIs require teacher JWT.</li>
-          <li>Student submissions require student JWT.</li>
-          <li>Exam submission locks after the exam timer.</li>
-          <li>Evaluation locks after the evaluation deadline.</li>
+          <li>Role-based dashboards</li>
+          <li>Timed exam submissions</li>
+          <li>Answer sheet uploads</li>
+          <li>Question-wise evaluation</li>
         </ul>
       </aside>
     </section>
