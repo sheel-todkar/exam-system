@@ -54,6 +54,19 @@ function TeacherDashboard({ exams, submissions, results, onReload, onMessage }) 
   }
 
   async function publishEvaluation(submission) {
+    if (submission.resultPublished) {
+      onMessage('This result is already published and cannot be published again.')
+      return
+    }
+
+    const confirmed = window.confirm(
+      'Publish this result now? After publishing, it will be visible to the student and cannot be published again.',
+    )
+
+    if (!confirmed) {
+      return
+    }
+
     const evaluations = submission.answers.map((answer) => ({
       answerId: answer._id,
       points: Number(evaluationDraft[answer._id]?.points ?? answer.points ?? 0),
@@ -163,7 +176,14 @@ function TeacherDashboard({ exams, submissions, results, onReload, onMessage }) 
                   <strong>{submission.examId?.title}</strong>
                   <p>{submission.studentId?.name} / due {submission.evaluationDueAt ? new Date(submission.evaluationDueAt).toLocaleString() : 'not submitted'}</p>
                 </div>
-                <button type="button" onClick={() => publishEvaluation(submission)}>Publish Result</button>
+                <button
+                  type="button"
+                  className={submission.resultPublished ? 'published-button' : ''}
+                  disabled={submission.resultPublished}
+                  onClick={() => publishEvaluation(submission)}
+                >
+                  {submission.resultPublished ? 'Published' : 'Publish Result'}
+                </button>
               </div>
               {submission.answers.map((answer) => (
                 <div className="answer-row" key={answer._id}>

@@ -15,6 +15,10 @@ async function evaluateExam(req, res) {
     return res.status(404).json({ message: 'Submission not found' });
   }
 
+  if (submission.resultPublished) {
+    return res.status(409).json({ message: 'Result is already published and cannot be republished' });
+  }
+
   if (submission.evaluationDueAt && submission.evaluationDueAt <= new Date()) {
     return res.status(400).json({ message: 'Evaluation time limit is over' });
   }
