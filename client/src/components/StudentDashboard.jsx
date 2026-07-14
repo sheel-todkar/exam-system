@@ -22,6 +22,7 @@ function StudentDashboard({ exams, results, submissions, onReload, onMessage }) 
   }, [])
 
   async function startExam(exam) {
+    setSelectedExamId(exam._id)
     const response = await api.post('/api/submissions/start', { examId: exam._id })
     setActiveSubmission(response.data.submission)
     setAnswers({})
@@ -83,13 +84,25 @@ function StudentDashboard({ exams, results, submissions, onReload, onMessage }) 
           </div>
           <div className="exam-list">
             {exams.map((exam) => (
-              <article className={selectedExam?._id === exam._id ? 'exam-card active' : 'exam-card'} key={exam._id}>
+              <article
+                className={selectedExam?._id === exam._id ? 'exam-card active' : 'exam-card'}
+                key={exam._id}
+                onClick={() => setSelectedExamId(exam._id)}
+              >
                 <button type="button" className="link-button" onClick={() => setSelectedExamId(exam._id)}>
                   {exam.title}
                 </button>
                 <p>{exam.subject} / {exam.className} / {exam.durationMinutes} min</p>
                 <span>{exam.totalMarks} marks</span>
-                <button type="button" onClick={() => startExam(exam)}>Start</button>
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    startExam(exam)
+                  }}
+                >
+                  Start
+                </button>
               </article>
             ))}
             {!exams.length ? <p className="empty">No published exams available.</p> : null}
